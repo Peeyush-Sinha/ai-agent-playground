@@ -8,9 +8,9 @@ def test_state_store_tracks_processed_messages(tmp_path):
     assert store.has_processed("msg-1") is False
 
     store.mark_processed(
-        gmail_id="msg-1",
-        thread_id="thread-1",
-        draft_id="draft-1",
+        gmail_id="msg",
+        thread_id="thread",
+        draft_id="draft",
         subject="Hello",
         decision=DraftDecision(
             should_reply=True,
@@ -22,7 +22,7 @@ def test_state_store_tracks_processed_messages(tmp_path):
         ),
     )
 
-    assert store.has_processed("msg-1") is True
+    assert store.has_processed("msg") is True
     rows = store.recent(limit=1)
-    assert rows[0]["gmail_id"] == "msg-1"
-    assert rows[0]["draft_id"] == "draft-1"
+    assert rows[0]["gmail_id"] == "msg"
+    assert rows[0]["draft_id"] == "draft"
