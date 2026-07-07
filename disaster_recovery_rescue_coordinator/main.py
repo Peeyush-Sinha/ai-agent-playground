@@ -4,7 +4,7 @@ main.py
 Command-line interface for RescueCoordinator.
 
 Usage:
-    export ANTHROPIC_API_KEY=sk-ant-...
+    export API_KEY=sk-ant-...
     python main.py
 
 Example prompts to try:
@@ -25,13 +25,13 @@ from agent import Agent
 
 
 def main():
-    if not os.environ.get("ANTHROPIC_API_KEY"):
-        print("Warning: ANTHROPIC_API_KEY is not set. Set it before running, e.g.:")
-        print("  export ANTHROPIC_API_KEY=sk-ant-...\n")
+    if not os.environ.get("API_KEY"):
+        print("Warning: API_KEY is not set. Set it before running, e.g.:")
+        print("  export API_KEY=sk-ant-...\n")
 
     print("=" * 70)
-    print("RescueCoordinator — disaster response decision-support agent (DEMO)")
-    print("Data sources are SIMULATED for this demo. Not for real dispatch use.")
+    print("RescueCoordinator — disaster response decision-support agent")
+    print("Data sources are SIMULATED for this demo")
     print("=" * 70)
     print("\nExample: 'Earthquake reported near lat 34.05, lon -118.25. Pull all")
     print("feeds, cluster, score, log the top incidents, and brief me.'\n")
