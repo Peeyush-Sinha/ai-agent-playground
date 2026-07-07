@@ -2,10 +2,9 @@
 agent.py
 --------
 The RescueCoordinator agent loop: same Reason -> Act -> Observe pattern
-as a standard tool-using Claude agent, with a system prompt and toolset
+as a standard tool-using AI agent, with a system prompt and toolset
 specialized for triaging disaster reports.
 
-IMPORTANT (read this before adapting for real use):
 This is a decision-support demo, not a dispatch system. In a real
 deployment, this agent's output should always be reviewed by a trained
 human coordinator before any resources are actually dispatched. The
@@ -51,7 +50,7 @@ are reading this under time pressure."""
 
 class Agent:
     def __init__(self, api_key: str | None = None, verbose: bool = True):
-        self.client = Anthropic(api_key=api_key)  # falls back to ANTHROPIC_API_KEY env var
+        self.client = Anthropic(api_key=api_key)
         self.verbose = verbose
         self.messages = []
 
