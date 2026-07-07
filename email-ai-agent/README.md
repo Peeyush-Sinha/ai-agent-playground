@@ -1,13 +1,13 @@
 # Email AI Agent
 
-A safe, draft-only Python agent that watches your Gmail inbox, decides which messages need a response, generates a suggested reply with AI Agent, and saves the result as a Gmail draft for you to review.
+A safe, draft-only Python agent that watches your Gmail inbox, decides which messages need a response, generates a suggested reply with AI Agent and saves the result as a Gmail draft for you to review.
 
 It does **not** send emails automatically.
 
 ## What it does
 
 - Authenticates to Gmail with OAuth.
-- Searches Gmail with a configurable Gmail query, for example `in:inbox is:unread`.
+- Searches Gmail with a configurable Gmail query for example `in:inbox is:unread`.
 - Reads matching emails and extracts plain-text or HTML body content.
 - Asks AI Agent for a structured decision: reply or no reply.
 - Creates a Gmail draft reply in the original thread when a response is useful.
