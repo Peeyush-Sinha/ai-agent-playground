@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "email-ai-agent"
+version = "0.1.0"
+description = "A safe draft-only AI email agent for Gmail and OpenAI."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{ name = "Peeyush Sinha" }]
+license = { text = "MIT" }
+dependencies = [
+  "openai>=1.90.0",
+  "google-api-python-client>=2.120.0",
+  "google-auth-httplib2>=0.2.0",
+  "google-auth-oauthlib>=1.2.0",
+  "python-dotenv>=1.0.1",
+  "rich>=13.7.0"
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.0.0"]
+
+[project.scripts]
+email-agent = "email_agent.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
