@@ -2,9 +2,6 @@
 data_sources.py
 ----------------
 Simulated real-time feeds for a disaster area.
-
-In a real deployment these functions would be replaced with actual
-integrations, e.g.:
   - satellite imagery  -> a provider API (Planet, Maxar, Sentinel Hub)
     run through a damage-detection model
   - social media       -> Twitter/X API, Facebook Crisis Response API,
@@ -22,7 +19,7 @@ import random
 import uuid
 from datetime import datetime, timedelta
 
-random.seed()  # non-deterministic; remove/seed a fixed int for reproducible demos
+random.seed()
 
 
 def _random_point_near(lat, lon, radius_km=5.0):
