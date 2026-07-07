@@ -1,13 +1,9 @@
-# RescueCoordinator (Python + Claude API)
+# RescueCoordinator
 
 A decision-support AI agent that aggregates multi-source disaster
 signals — satellite imagery, social media, and sensor feeds — clusters
-them into incidents, and prioritizes where human responders should
+them into incidents and prioritizes where human responders should
 look first after an earthquake or flood.
-
-> **This is a demo, not a real dispatch tool.** All data sources are
-> simulated. Read the "Real-world use" section before adapting this
-> for anything beyond learning/prototyping.
 
 ## The problem it addresses
 
@@ -26,33 +22,19 @@ This agent automates the *aggregation and first-pass triage* so a
 human coordinator can spend their attention on the highest-value
 decisions, not on manually scanning feeds.
 
-## Project structure
-
-```
-rescue_coordinator/
-├── data_sources.py   # Simulated satellite / social media / sensor feeds
-├── tools.py          # Fetch, cluster, score, and log incidents
-├── agent.py          # The Reason -> Act -> Observe loop (Claude API)
-├── main.py           # Command-line interface
-├── requirements.txt
-└── incidents.json     # Created automatically — the logged incident board
-```
-
 ## How it works
 
 1. **Ingest** — `get_satellite_reports`, `get_social_media_reports`,
    and `get_sensor_feeds` each return a list of geotagged reports near
-   a location (in this demo, randomly generated to look realistic; in
-   production these would call real APIs and detection models).
+   a location.
 
 2. **Cluster** — `cluster_reports` merges reports within a configurable
    radius (default 500m) into incident clusters using simple
    haversine-distance grouping, recomputing each cluster's centroid as
-   reports are added. This is deliberately a simple, transparent
-   algorithm — swap in DBSCAN or a proper geospatial index for a real
-   system with much higher report volumes.
+   reports are added. This is an algorithm — swap in DBSCAN or a proper
+   geospatial index for a real system with much higher report volumes.
 
-3. **Score** — `score_incident` turns each cluster into a 0-100
+4. **Score** — `score_incident` turns each cluster into a 0-100
    priority score from four signals:
    - **Volume** — more independent reports about the same spot
    - **Source diversity** — satellite + social + sensor all agreeing
@@ -64,13 +46,13 @@ rescue_coordinator/
    These weights (`0.30 / 0.30 / 0.25 / 0.15` in `tools.py`) are a
    reasonable starting point, not a validated model — see below.
 
-4. **Log & brief** — `save_incident` records the incidents worth a
+5. **Log & brief** — `save_incident` records the incidents worth a
    responder's attention with a short plain-language summary;
    `list_incidents` returns the current board ranked by priority. The
    agent then writes a concise text briefing.
 
 The agent (`agent.py`) is the same tool-use loop pattern as a general
-ReAct agent: send the conversation + tool schemas to Claude, execute
+ReAct agent: send the conversation + tool schemas to agent, execute
 whichever tools it calls, feed results back, repeat until it produces
 a final text briefing (capped at `MAX_STEPS` for safety).
 
@@ -104,33 +86,6 @@ please verify before dispatch):
    rising floodwater; not yet corroborated by sensor or imagery data.
 ...
 ```
-
-## Real-world use: what would need to change
-
-This project is intentionally simplified for learning. A production
-version would need, at minimum:
-
-- **Verified data sources** — real satellite/detection APIs, a vetted
-  social-media firehose with geotagging + NLP distress classification,
-  and authenticated sensor networks — each with their own rate limits,
-  latency, and failure modes.
-- **Human-in-the-loop confirmation** — this agent should *never*
-  trigger dispatch directly. Its output is a prioritized worklist for
-  a trained coordinator, because false positives have a real cost
-  (wasted rescue capacity) and false negatives have a worse one
-  (missed survivors).
-- **Calibrated scoring** — the priority weights here are a reasonable
-  starting point, not a validated model. A real system should
-  calibrate against historical incident data and involve domain
-  experts (emergency management, structural engineers) in tuning it.
-- **Robustness** — retry/backoff for flaky feeds, deduplication across
-  agent runs, audit logging of every decision, and monitoring for
-  when a feed goes silent (which is itself a signal worth flagging).
-- **Bias and equity checks** — social media signal is denser in areas
-  with better connectivity and higher smartphone usage, which can
-  systematically under-prioritize poorer or more remote areas. A real
-  system needs explicit checks (and probably non-social-media signal
-  weighting) to counteract this.
 
 ## Ideas to extend this
 
